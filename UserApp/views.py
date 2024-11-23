@@ -38,7 +38,19 @@ def users(request, id=0):
             return JsonResponse('Failed to update', safe=False)
         except Users.DoesNotExist:
             return JsonResponse('User not found', status=404)
-    elif request.method=='DELETE':
-        user = Users.objects.get(_id=id)
-        user.delete()
-        return JsonResponse('Deleted Successfully', safe=False)
+    elif request.method == 'DELETE':
+        try:
+        # Valida se o ID é um ObjectId válido
+            if not ObjectId.is_valid(id):
+                return JsonResponse({'error': 'Invalid ID format'}, status=400)
+            
+            # Busca o usuário
+            user = Users.objects.get(_id=ObjectId(id))
+            user.delete()
+            return JsonResponse({'message': 'Deleted Successfully'}, status=200)
+        
+        except Users.DoesNotExist:
+            return JsonResponse({'error': 'User not found'}, status=404)
+        
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=500)
