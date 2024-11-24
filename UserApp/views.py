@@ -4,9 +4,10 @@ from django.shortcuts import render
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from django.http.response import JsonResponse
+from rest_framework_simplejwt.views import TokenObtainPairView
 
 from UserApp.models import Users
-from UserApp.serialize import userSerializer
+from UserApp.serialize import userSerializer, CustomTokenObtainPairSerializer
 
 # Create your views here.
 
@@ -54,3 +55,6 @@ def users(request, id=0):
         
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=500)
+        
+class CustomTokenObtainPairView(TokenObtainPairView):
+    serializer_class = CustomTokenObtainPairSerializer

@@ -1,9 +1,12 @@
-from django.urls import path, re_path
+from django.urls import path
+from rest_framework_simplejwt.views import TokenRefreshView
 from UserApp import views
+from .views import CustomTokenObtainPairView
 
 urlpatterns = [
-    # Usando path() para rotas simples
     path('user', views.users, name='user_list'),
-    # Usando re_path() para incluir parâmetros com regex
     path('user/<str:id>/', views.users, name='user_detail'),
+    path('login/', CustomTokenObtainPairView.as_view(), name='custom_token_obtain_pair'),
+    # Endpoint para renovar token
+    path('token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]

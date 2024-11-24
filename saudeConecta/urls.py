@@ -22,4 +22,5 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     # Substituindo `url()` por `re_path()`
     re_path(r'^', include('UserApp.urls')),
+    path("/auth", include('UserApp.urls'))
 ]
